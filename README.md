@@ -1,18 +1,54 @@
 # H4Shira
 
-H4S Visual Intelligence Engine para Roblox Studio. Um sistema LocalScript de renderização adaptativa com Future Lighting, interpretação artística, correção contextual de materiais e orçamento de CPU/GPU baseado em APIs públicas do Roblox.
+Adaptive visual systems for Roblox Studio.
 
-## Versões
+H4Shira provides a single LocalScript with lighting controls, atmosphere, material adjustments, perceptual prioritization, distance budgets for lights and particles, and runtime CPU/GPU-aware quality control.
 
-- `V1`: base cinematográfica de iluminação e atmosfera.
-- `V2`: materiais adaptativos e atualização dinâmica.
-- `V3`: prioridade perceptual, preservação e exposição adaptativa.
-- `Latest`: engine proprietário completo com assinatura artística, zonas contextuais, orçamento de luzes/partículas e controle CPU/GPU.
+## Quick start
 
-## Instalação
+1. Open the project in Roblox Studio.
+2. Copy `Latest/ShadersLocalScript.lua`.
+3. Create a `LocalScript` inside `StarterPlayer > StarterPlayerScripts`.
+4. Paste the script and run the experience.
 
-Coloque uma versão em `StarterPlayer > StarterPlayerScripts` como `LocalScript`. Consulte `docs/installation.md`.
+Use an earlier version if you need a smaller or simpler implementation.
 
-## Limites técnicos
+## Versions
 
-O projeto usa somente APIs públicas do Roblox. Não declara ser DLSS, não acessa o pipeline interno da GPU e não cria shaders GPU personalizados.
+| Version | Main focus |
+| --- | --- |
+| `V1` | Future Lighting, atmosphere, water, Bloom and SunRays |
+| `V2` | Basic adaptive materials and dynamic lighting updates |
+| `V3` | Camera priority, material preservation and adaptive exposure |
+| `Latest` | Full H4S Visual Intelligence Engine with contextual analysis and runtime budgets |
+
+## Optional attributes
+
+Set these attributes on `Workspace` or on individual objects when needed:
+
+```text
+H4S_ArtStyle = "realistic"
+H4S_PreserveAesthetic = 0.85
+H4S_KeepMaterial = true
+H4S_Preserve = true
+H4S_ForceRealism = true
+H4S_KeepLight = true
+H4S_KeepParticles = true
+```
+
+Valid `H4S_ArtStyle` values are `realistic`, `cinematic`, `stylized`, and `balanced`.
+
+## Notes
+
+- The scripts are client-side and should be installed as `LocalScript` objects.
+- The project uses public Roblox APIs and the Future lighting technology.
+- Existing materials, colors and protected objects are preserved as much as possible.
+- Custom PBR textures and `SurfaceAppearance` assets are not included and must be provided by the map creator.
+- Test the selected version on the target PC, mobile and console devices.
+
+## Documentation
+
+- [Installation](docs/installation.md)
+- [Architecture](docs/architecture.md)
+- [Attributes and tags](examples/attributes.md)
+- [Changelog](CHANGELOG.md)
