@@ -1,8 +1,12 @@
 # H4Shira
 
-Rendering tools for Roblox Studio, distributed as a proprietary commercial SaaS product.
+<p align="center">
+  <img src="assets/h4shira-mark.png" width="128" alt="H4Shira mark">
+</p>
 
-H4Shira provides the H4S Rendering System: a client-side Roblox system for lighting control, atmosphere, material adjustments, camera priority, distance budgets, and runtime CPU/GPU-aware quality control.
+<p align="center">Rendering tools for Roblox Studio.</p>
+
+H4Shira is a client-side Roblox system for lighting, atmosphere, material adjustments, camera priority, distance budgets, and runtime quality control.
 
 ## Quick start
 
@@ -18,8 +22,8 @@ Use an earlier version when a smaller implementation is preferred.
 | Version | Main focus |
 | --- | --- |
 | `V1` | Future Lighting, atmosphere, water, Bloom and SunRays |
-| `V2` | Basic adaptive materials and dynamic lighting updates |
-| `V3` | Camera priority, material preservation and adaptive exposure |
+| `V2` | Basic material adjustments and dynamic lighting updates |
+| `V3` | Camera priority, material preservation and exposure |
 | `Latest` | Full H4S Rendering System with map analysis and runtime budgets |
 
 ## Optional attributes
@@ -38,23 +42,44 @@ H4S_KeepParticles = true
 
 Valid `H4S_Style` values are `natural`, `film`, `stylized`, and `balanced`.
 
-## Technical notes
+## Test images
 
-- The scripts are client-side and should be installed as `LocalScript` objects.
-- The project uses public Roblox APIs and Future lighting technology.
-- Existing materials, colors, and protected objects are preserved as much as possible.
-- Custom PBR textures and `SurfaceAppearance` assets are not included.
-- Test the selected version on the target PC, mobile, and console devices.
-- Roblox and Roblox Studio are trademarks of Roblox Corporation.
+These images are reference scenes for visual checks. Keep the camera position and time of day consistent when comparing results.
+
+### Natural daylight
+
+![Natural daylight test](assets/test-natural-daylight.jpg)
+
+### Evening light
+
+![Evening light test](assets/test-evening-light.jpg)
+
+### Interior materials
+
+![Interior materials test](assets/test-interior-materials.jpg)
 
 ## Documentation
 
 - [Installation](docs/installation.md)
+- [Configuration](docs/configuration.md)
 - [Architecture](docs/architecture.md)
+- [Performance](docs/performance.md)
+- [Testing guide](docs/testing.md)
+- [Troubleshooting](docs/troubleshooting.md)
+- [Versions](docs/versions.md)
 - [Attributes and tags](examples/attributes.md)
 - [Changelog](CHANGELOG.md)
 - [Commercial SaaS License](LICENSE)
 
+## Technical notes
+
+- The scripts are client-side `LocalScript` objects.
+- The project uses public Roblox APIs and Future lighting technology.
+- Existing materials, colors and protected objects are preserved as much as possible.
+- Custom PBR textures and `SurfaceAppearance` assets are not included.
+- Test the selected version on the target PC, mobile and console devices.
+- Roblox and Roblox Studio are trademarks of Roblox Corporation.
+
 ## License
 
-This is proprietary software. Access, source use, redistribution, resale, and commercial rights are governed by the [H4Shira Proprietary Commercial SaaS License](LICENSE).
+Use is governed by the [H4Shira Commercial SaaS License](LICENSE).
