@@ -5,7 +5,7 @@ Copyright (c) 2026 H4ShiraTeam. All rights reserved.
 
 1. Grant of License
 
-Subject to payment of the applicable subscription or commercial fee, H4ShiraTeam grants the customer a limited, non-exclusive, non-transferable, non-sublicensable license to access and use the H4S Adaptive Rendering Engine as an authorized SaaS product for the customer's own Roblox experiences.
+Subject to payment of the applicable subscription or commercial fee, H4ShiraTeam grants the customer a limited, non-exclusive, non-transferable, non-sublicensable license to access and use the H4S Rendering System as an authorized SaaS product for the customer's own Roblox experiences.
 
 2. Permitted Use
 
@@ -19,32 +19,32 @@ The customer may:
 
 The customer may not, without prior written permission from H4ShiraTeam:
 
-- Resell, sublicense, lease, rent, publish, or redistribute the engine or its source code.
-- Offer the engine as a competing service or expose it as an open public API.
+- Resell, sublicense, lease, rent, publish, or redistribute the system or its source code.
+- Offer the system as a competing service or expose it as an open public API.
 - Remove copyright notices, trademarks, attribution, or license notices.
 - Share credentials, private builds, source archives, or subscription access with third parties.
 - Copy, reverse engineer, decompile, or create a competing implementation from the service, except where such restriction is prohibited by applicable law.
-- Use the engine to create a competing commercial SaaS product.
+- Use the system to create a competing commercial SaaS product.
 
 4. Ownership
 
-The engine, source code, documentation, naming, branding, algorithms, and related materials remain the exclusive property of H4ShiraTeam. This license grants limited usage rights only and does not transfer ownership or intellectual property rights.
+The system, source code, documentation, naming, branding, algorithms, and related materials remain the exclusive property of H4ShiraTeam. This license grants limited usage rights only and does not transfer ownership or intellectual property rights.
 
 5. Third-Party Components
 
-Roblox, Roblox Studio, and their respective trademarks and services remain the property of Roblox Corporation. The engine does not claim ownership of Roblox technologies or assets. Third-party assets remain subject to their own licenses.
+Roblox, Roblox Studio, and their respective trademarks and services remain the property of Roblox Corporation. The system does not claim ownership of Roblox technologies or assets. Third-party assets remain subject to their own licenses.
 
 6. Termination
 
-This license terminates automatically if the customer materially violates its terms or fails to maintain the applicable subscription or commercial authorization. Upon termination, the customer must stop using the engine and delete unauthorized copies and credentials.
+This license terminates automatically if the customer materially violates its terms or fails to maintain the applicable subscription or commercial authorization. Upon termination, the customer must stop using the system and delete unauthorized copies and credentials.
 
 7. Disclaimer
 
-The engine is provided on an "as is" and "as available" basis. H4ShiraTeam does not guarantee uninterrupted service, compatibility with every Roblox experience, a specific frame rate, or any particular visual result.
+The system is provided on an "as is" and "as available" basis. H4ShiraTeam does not guarantee uninterrupted service, compatibility with every Roblox experience, a specific frame rate, or any particular visual result.
 
 8. Limitation of Liability
 
-To the maximum extent permitted by law, H4ShiraTeam will not be liable for indirect, incidental, special, consequential, or loss-of-profit damages arising from the use of the engine. Any direct liability is limited to the fees paid for the affected license period.
+To the maximum extent permitted by law, H4ShiraTeam will not be liable for indirect, incidental, special, consequential, or loss-of-profit damages arising from the use of the system. Any direct liability is limited to the fees paid for the affected license period.
 
 9. Commercial Terms
 

@@ -34,13 +34,13 @@ rays.Spread=0.82
 local air=make("Atmosphere","H4S_V1_Atmosphere")
 air.Density=0.24
 air.Offset=0.1
-air.Color=Color3.fromRGB(199,212,226)
-air.Decay=Color3.fromRGB(88,101,119)
+air.Color=Color3.fromRGB(215,222,226)
+air.Decay=Color3.fromRGB(105,111,106)
 air.Glare=0.14
 air.Haze=0.92
 local terrain=Workspace:FindFirstChildOfClass("Terrain")
 if terrain then
- terrain.WaterColor=Color3.fromRGB(42,112,132)
+ terrain.WaterColor=Color3.fromRGB(64,122,108)
  terrain.WaterReflectance=0.42
  terrain.WaterTransparency=0.18
  terrain.WaterWaveSize=0.18

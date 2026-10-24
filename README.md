@@ -1,8 +1,8 @@
 # H4Shira
 
-Adaptive visual systems for Roblox Studio, distributed as a proprietary commercial SaaS product.
+Rendering tools for Roblox Studio, distributed as a proprietary commercial SaaS product.
 
-H4Shira provides the H4S Adaptive Rendering Engine: a client-side Roblox system for lighting control, atmosphere, contextual material adjustments, perceptual prioritization, distance budgets, and runtime CPU/GPU-aware quality control.
+H4Shira provides the H4S Rendering System: a client-side Roblox system for lighting control, atmosphere, material adjustments, camera priority, distance budgets, and runtime CPU/GPU-aware quality control.
 
 ## Quick start
 
@@ -20,23 +20,23 @@ Use an earlier version when a smaller implementation is preferred.
 | `V1` | Future Lighting, atmosphere, water, Bloom and SunRays |
 | `V2` | Basic adaptive materials and dynamic lighting updates |
 | `V3` | Camera priority, material preservation and adaptive exposure |
-| `Latest` | Full H4S Adaptive Rendering Engine with contextual analysis and runtime budgets |
+| `Latest` | Full H4S Rendering System with map analysis and runtime budgets |
 
 ## Optional attributes
 
 Set these attributes on `Workspace` or on individual objects when needed:
 
 ```text
-H4S_ArtStyle = "realistic"
+H4S_Style = "natural"
 H4S_PreserveAesthetic = 0.85
 H4S_KeepMaterial = true
 H4S_Preserve = true
-H4S_ForceRealism = true
+H4S_ForceMaterial = true
 H4S_KeepLight = true
 H4S_KeepParticles = true
 ```
 
-Valid `H4S_ArtStyle` values are `realistic`, `cinematic`, `stylized`, and `balanced`.
+Valid `H4S_Style` values are `natural`, `film`, `stylized`, and `balanced`.
 
 ## Technical notes
 

@@ -15,8 +15,8 @@ local updateQueue = {}
 local animatedSet = {}
 local lightRegistry = {}
 local emitterRegistry = {}
-local engine = {
-	name = "H4S Adaptive Rendering Engine",
+local runtime = {
+	name = "H4S Rendering System",
 	version = "1.0.0",
 	signature = {},
 	zoneMemory = {},
@@ -31,12 +31,12 @@ local engine = {
 }
 local scene = {
 	style = "balanced",
-	styleConfidence = 0,
+	styleScore = 0,
 	averageSaturation = 0,
 	averageBrightness = 0,
 	warmth = 0,
 	neonRatio = 0,
-	materialConfidence = 0,
+	materialMatch = 0,
 	correctionStrength = 0.22,
 	preserve = 0.78,
 	analyzed = false,
@@ -50,15 +50,15 @@ local CONFIG = {
 	MaxTrackedParts = 4200,
 	MaxAnimatedParts = 700,
 	SceneSampleSize = 900,
-	EnableSceneInterpretation = true,
+	EnableMapScan = true,
 	EnableMaterialAdaptation = true,
 	EnableDynamicExposure = true,
 	EnableAdaptiveAtmosphere = true,
-	EnableCinematicDepth = true,
+	EnableDepthOfField = true,
 	EnableBloom = true,
 	EnableSunRays = true,
 	EnableSurfaceResponse = true,
-	WaterTint = Color3.fromRGB(42, 112, 132),
+	WaterTint = Color3.fromRGB(64, 122, 108),
 	NightBrightness = 1.05,
 	DayBrightness = 2.15,
 	PreserveOriginalColor = 0.82,
@@ -71,14 +71,14 @@ local CONFIG = {
 	EnableParticleBudget = true,
 	LightDistance = 220,
 	ParticleDistance = 180,
-	EnableProprietaryEngine = true,
-	PerceptualRange = 260,
+	EnableMapProfile = true,
+	PriorityRange = 260,
 	SignatureSampleSize = 1200,
 	CPUFrameBudget = 0.0035,
 	EnableHardwareBudget = true,
 }
 
-local reconstruction = {
+local qualityState = {
 	quality = 1,
 	frameTime = CONFIG.TargetFrameTime,
 	stableFrameTime = CONFIG.TargetFrameTime,
@@ -95,11 +95,11 @@ local function getOrCreate(className, name)
 	return object
 end
 
-local colorGrade = getOrCreate("ColorCorrectionEffect", "H4S_CinematicGrade")
-local bloom = getOrCreate("BloomEffect", "H4S_RealBloom")
-local sunRays = getOrCreate("SunRaysEffect", "H4S_VolumetricSun")
-local depthOfField = getOrCreate("DepthOfFieldEffect", "H4S_CinematicDepth")
-local atmosphere = getOrCreate("Atmosphere", "H4S_PhysicalAtmosphere")
+local colorGrade = getOrCreate("ColorCorrectionEffect", "H4S_NaturalGrade")
+local bloom = getOrCreate("BloomEffect", "H4S_Bloom")
+local sunRays = getOrCreate("SunRaysEffect", "H4S_SunRays")
+local depthOfField = getOrCreate("DepthOfFieldEffect", "H4S_DepthOfField")
+local atmosphere = getOrCreate("Atmosphere", "H4S_Atmosphere")
 
 local function safeSet(object, property, value)
 	pcall(function()
@@ -107,20 +107,20 @@ local function safeSet(object, property, value)
 	end)
 end
 
-local function updateReconstruction(deltaTime)
+local function updateQualityState(deltaTime)
 	if not CONFIG.EnableAdaptiveQuality then
 		return
 	end
 	local measured = math.clamp(deltaTime, 1 / 240, 0.12)
-	reconstruction.frameTime = reconstruction.frameTime + (measured - reconstruction.frameTime) * 0.12
-	reconstruction.stableFrameTime = reconstruction.stableFrameTime + (reconstruction.frameTime - reconstruction.stableFrameTime) * 0.035
+	qualityState.frameTime = qualityState.frameTime + (measured - qualityState.frameTime) * 0.12
+	qualityState.stableFrameTime = qualityState.stableFrameTime + (qualityState.frameTime - qualityState.stableFrameTime) * 0.035
 	local target = CONFIG.TargetFrameTime
-	local pressure = math.clamp((reconstruction.stableFrameTime - target) / target, -0.45, 1.2)
+	local pressure = math.clamp((qualityState.stableFrameTime - target) / target, -0.45, 1.2)
 	local desired = math.clamp(1 - pressure * 0.38, CONFIG.MinimumRenderQuality, CONFIG.MaximumRenderQuality)
-	local response = desired < reconstruction.quality and 0.12 or 0.025
-	reconstruction.quality += (desired - reconstruction.quality) * response
-	engine.hardware.frameTime = reconstruction.stableFrameTime
-	engine.hardware.gpuQuality = reconstruction.quality
+	local response = desired < qualityState.quality and 0.12 or 0.025
+	qualityState.quality += (desired - qualityState.quality) * response
+	runtime.hardware.frameTime = qualityState.stableFrameTime
+	runtime.hardware.gpuQuality = qualityState.quality
 end
 
 local function updateCPUQuality(cpuTime)
@@ -130,9 +130,9 @@ local function updateCPUQuality(cpuTime)
 	local budget = CONFIG.CPUFrameBudget
 	local pressure = math.clamp((cpuTime - budget) / budget, -0.5, 1.5)
 	local target = math.clamp(1 - pressure * 0.42, 0.5, 1)
-	local response = target < engine.hardware.cpuQuality and 0.18 or 0.035
-	engine.hardware.cpuQuality += (target - engine.hardware.cpuQuality) * response
-	engine.hardware.cpuTime = cpuTime
+	local response = target < runtime.hardware.cpuQuality and 0.18 or 0.035
+	runtime.hardware.cpuQuality += (target - runtime.hardware.cpuQuality) * response
+	runtime.hardware.cpuTime = cpuTime
 end
 
 safeSet(Lighting, "Technology", Enum.Technology.Future)
@@ -207,7 +207,7 @@ local function updateNativeBudgets()
 	if not camera then
 		return
 	end
-	local quality = math.min(reconstruction.quality, engine.hardware.cpuQuality)
+	local quality = math.min(qualityState.quality, runtime.hardware.cpuQuality)
 	if CONFIG.EnableLightBudget then
 		local lightDistance = CONFIG.LightDistance * (0.72 + quality * 0.28)
 		for index = #lightRegistry, 1, -1 do
@@ -289,9 +289,9 @@ local styleKeywords = {
 	low_poly = true,
 	fantasy = true,
 	anime = true,
-	realistic = false,
+	natural = false,
 	realism = false,
-	cinematic = false,
+	film = false,
 	photoreal = false,
 }
 
@@ -314,10 +314,10 @@ local function colorMetrics(color)
 end
 
 local function getManualStyle()
-	local value = Workspace:GetAttribute("H4S_ArtStyle") or Lighting:GetAttribute("H4S_ArtStyle")
+	local value = Workspace:GetAttribute("H4S_Style") or Lighting:GetAttribute("H4S_Style")
 	if typeof(value) == "string" then
 		value = lower(value)
-		if value == "stylized" or value == "realistic" or value == "cinematic" or value == "balanced" then
+		if value == "stylized" or value == "natural" or value == "film" or value == "balanced" then
 			return value
 		end
 	end
@@ -340,7 +340,7 @@ local function getZoneKey(part)
 	return "global"
 end
 
-local function getPerceptualPriority(part)
+local function getCameraPriority(part)
 	if not camera then
 		return 0.35
 	end
@@ -348,12 +348,12 @@ local function getPerceptualPriority(part)
 	local projectedPresence = part.Size.Magnitude / math.max(distance, 1)
 	local centrality = camera.CFrame.LookVector:Dot((part.Position - camera.CFrame.Position).Unit)
 	local visibility = clamp01((centrality + 0.35) / 1.35)
-	local proximity = 1 - clamp01(distance / CONFIG.PerceptualRange)
+	local proximity = 1 - clamp01(distance / CONFIG.PriorityRange)
 	return clamp01(projectedPresence * 0.55 + visibility * 0.25 + proximity * 0.2)
 end
 
-local function buildArtisticSignature()
-	if not CONFIG.EnableProprietaryEngine then
+local function buildMapProfile()
+	if not CONFIG.EnableMapProfile then
 		return
 	end
 	local signature = {}
@@ -379,8 +379,8 @@ local function buildArtisticSignature()
 		bucket.brightness /= bucket.count
 		bucket.warmth /= bucket.count
 	end
-	engine.signature = signature
-	engine.lastProfileUpdate = os.clock()
+	runtime.signature = signature
+	runtime.lastProfileUpdate = os.clock()
 end
 
 local function getContextualIntent(part, profile, keywordProfile)
@@ -396,13 +396,13 @@ local function getContextualIntent(part, profile, keywordProfile)
 	if string.find(zoneName, "city", 1, true) or string.find(zoneName, "industrial", 1, true) then
 		intent += part.Material == Enum.Material.Metal and 0.1 or 0
 	end
-	local priority = getPerceptualPriority(part)
-	engine.zoneMemory[zone] = (engine.zoneMemory[zone] or 0) + priority * 0.01
+	local priority = getCameraPriority(part)
+	runtime.zoneMemory[zone] = (runtime.zoneMemory[zone] or 0) + priority * 0.01
 	return clamp01(intent), priority, zone
 end
 
 local function inferSceneIntent()
-	if not CONFIG.EnableSceneInterpretation then
+	if not CONFIG.EnableMapScan then
 		return
 	end
 	local manualStyle = getManualStyle()
@@ -413,7 +413,7 @@ local function inferSceneIntent()
 	local neonCount = 0
 	local materialCount = 0
 	local recognizedMaterials = 0
-	local styleVotes = {stylized = 0, realistic = 0, cinematic = 0}
+	local styleVotes = {stylized = 0, natural = 0, film = 0}
 	for _, item in ipairs(Workspace:GetDescendants()) do
 		if sampleCount >= CONFIG.SceneSampleSize then
 			break
@@ -436,7 +436,7 @@ local function inferSceneIntent()
 					if stylized == true then
 						styleVotes.stylized += 1
 					else
-						styleVotes.realistic += 1
+						styleVotes.natural += 1
 					end
 				end
 			end
@@ -450,31 +450,31 @@ local function inferSceneIntent()
 	scene.averageBrightness = brightnessTotal / sampleCount
 	scene.warmth = warmthTotal / sampleCount
 	scene.neonRatio = neonCount / sampleCount
-	scene.materialConfidence = clamp01(recognizedMaterials / math.max(materialCount, 1))
+	scene.materialMatch = clamp01(recognizedMaterials / math.max(materialCount, 1))
 	local existingContrast = math.abs(Lighting.Brightness - 2)
 	local style = manualStyle
 	if not style then
-		if styleVotes.stylized >= 4 and styleVotes.stylized > styleVotes.realistic then
+		if styleVotes.stylized >= 4 and styleVotes.stylized > styleVotes.natural then
 			style = "stylized"
-		elseif styleVotes.realistic >= 4 and styleVotes.realistic > styleVotes.stylized then
-			style = "realistic"
+		elseif styleVotes.natural >= 4 and styleVotes.natural > styleVotes.stylized then
+			style = "natural"
 		elseif scene.averageSaturation > 0.48 or scene.neonRatio > 0.08 then
 			style = "stylized"
 		elseif scene.averageSaturation < 0.23 and existingContrast > 0.55 then
-			style = "cinematic"
+			style = "film"
 		else
 			style = "balanced"
 		end
 	end
 	scene.style = style
-	scene.styleConfidence = manualStyle and 1 or clamp01(0.35 + math.abs(scene.averageSaturation - 0.32) * 1.5 + math.max(styleVotes.stylized, styleVotes.realistic) / math.max(sampleCount, 1))	
+	scene.styleScore = manualStyle and 1 or clamp01(0.35 + math.abs(scene.averageSaturation - 0.32) * 1.5 + math.max(styleVotes.stylized, styleVotes.natural) / math.max(sampleCount, 1))	
 	if style == "stylized" then
 		scene.correctionStrength = 0.1
 		scene.preserve = 0.93
-	elseif style == "cinematic" then
+	elseif style == "film" then
 		scene.correctionStrength = 0.2
 		scene.preserve = 0.84
-	elseif style == "realistic" then
+	elseif style == "natural" then
 		scene.correctionStrength = 0.34
 		scene.preserve = 0.72
 	else
@@ -486,7 +486,7 @@ local function inferSceneIntent()
 		scene.preserve = clamp01(preserveAttribute)
 		scene.correctionStrength *= 1 - scene.preserve * 0.35
 	end
-	buildArtisticSignature()
+	buildMapProfile()
 	scene.analyzed = true
 end
 
@@ -521,7 +521,7 @@ local function getCorrectionNeed(part, profile, keywordProfile)
 	local materialMismatch = keywordProfile and (part.Material == keywordProfile.material and 0 or 0.9) or 0
 	local reflectanceMismatch = profile and math.abs(part.Reflectance - profile.reflectance) or 0
 	local need = colorMismatch * 0.55 + materialMismatch * 0.28 + reflectanceMismatch * 0.17
-	local signature = engine.signature[tostring(part.Material)]
+	local signature = runtime.signature[tostring(part.Material)]
 	if signature then
 		local signatureDeviation = math.abs(saturation - signature.saturation) * 0.35
 			+ math.abs(brightness - signature.brightness) * 0.35
@@ -529,8 +529,8 @@ local function getCorrectionNeed(part, profile, keywordProfile)
 		need += signatureDeviation * 0.12
 	end
 	local intent, priority, zone = getContextualIntent(part, profile, keywordProfile)
-	engine.priorityMemory[part] = priority
-	engine.zoneMemory[zone] = (engine.zoneMemory[zone] or 0) + intent * 0.005
+	runtime.priorityMemory[part] = priority
+	runtime.zoneMemory[zone] = (runtime.zoneMemory[zone] or 0) + intent * 0.005
 	need *= (0.42 + priority * 0.58) * (0.72 + intent * 0.28)
 	if part.Material == Enum.Material.Neon or part.Material == Enum.Material.Glass then
 		need *= scene.style == "stylized" and 0.3 or 0.7
@@ -569,7 +569,7 @@ local function applyMaterialAdaptation(part)
 	local keywordBoost = keywordProfile and 0.22 or 0
 	local strength = clamp01(scene.correctionStrength * (0.35 + need * 1.1) + keywordBoost)
 	strength *= 1 - scene.preserve * 0.28
-	if part:GetAttribute("H4S_ForceRealism") == true or CollectionService:HasTag(part, "H4S_ForceRealism") then
+	if part:GetAttribute("H4S_ForceMaterial") == true or CollectionService:HasTag(part, "H4S_ForceMaterial") then
 		strength = math.max(strength, 0.7)
 	end
 	local customColor = part:GetAttribute("H4S_CustomColor")
@@ -613,7 +613,7 @@ local function processScanBatch()
 	if #worldParts == 0 then
 		return
 	end
-	local combinedQuality = math.min(reconstruction.quality, engine.hardware.cpuQuality)
+	local combinedQuality = math.min(qualityState.quality, runtime.hardware.cpuQuality)
 	local budget = math.max(48, math.floor(CONFIG.ScanBatchSize * (0.5 + combinedQuality * 0.5)))
 	local processed = 0
 	while processed < budget and scanCursor <= #worldParts do
@@ -658,10 +658,10 @@ local function updateAtmosphere(daylight, normalized)
 	atmosphere.Glare = glare
 	atmosphere.Color = skyColor
 	atmosphere.Decay = decayColor
-	colorGrade.TintColor = Color3.fromRGB(255, 247, 231):Lerp(Color3.fromRGB(190, 211, 255), night * 0.86)
+	colorGrade.TintColor = Color3.fromRGB(255, 247, 231):Lerp(Color3.fromRGB(205, 213, 226), night * 0.86)
 	colorGrade.Saturation = scene.style == "stylized" and 0.025 or (-0.035 + daylight * 0.05)
-	colorGrade.Contrast = (scene.style == "cinematic" and 0.18 or 0.11) + daylight * 0.065
-	local quality = reconstruction.quality
+	colorGrade.Contrast = (scene.style == "film" and 0.18 or 0.11) + daylight * 0.065
+	local quality = qualityState.quality
 	bloom.Intensity = CONFIG.EnableBloom and (0.07 + daylight * 0.1 + scene.neonRatio * 0.22) * (0.7 + quality * 0.3) or 0
 	bloom.Size = 18 + math.floor(quality * 10)
 	sunRays.Intensity = CONFIG.EnableSunRays and (0.012 + daylight * 0.06) * (0.72 + quality * 0.28) or 0
@@ -687,12 +687,12 @@ local function updateExposure()
 	local obstruction = hit and 1 or 0
 	local target = -0.1 + daylight * 0.14 - obstruction * 0.06
 	local current = Lighting.ExposureCompensation
-	local response = 0.045 * (0.72 + reconstruction.quality * 0.28)
+	local response = 0.045 * (0.72 + qualityState.quality * 0.28)
 	Lighting.ExposureCompensation = current + (target - current) * response
-	if CONFIG.EnableCinematicDepth and scene.style ~= "stylized" then
+	if CONFIG.EnableDepthOfField and scene.style ~= "stylized" then
 		local distance = hit and (hit.Position - origin).Magnitude or 140
 		depthOfField.FocusDistance = math.clamp(distance, 30, 140)
-		depthOfField.Enabled = camera.FieldOfView <= 78 and reconstruction.quality > 0.64
+		depthOfField.Enabled = camera.FieldOfView <= 78 and qualityState.quality > 0.64
 	else
 		depthOfField.Enabled = false
 	end
@@ -730,7 +730,7 @@ rebuildWorldList()
 scanNativeRenderObjects()
 
 connections[#connections + 1] = RunService.RenderStepped:Connect(function(deltaTime)
-	updateReconstruction(deltaTime)
+	updateQualityState(deltaTime)
 	local cpuStart = os.clock()
 	elapsed += deltaTime
 	scanElapsed += deltaTime
