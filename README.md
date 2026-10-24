@@ -2,7 +2,7 @@
 
 Adaptive visual systems for Roblox Studio, distributed as a proprietary commercial SaaS product.
 
-H4Shira provides the H4S Visual Intelligence Engine: a client-side Roblox system for lighting control, atmosphere, contextual material adjustments, perceptual prioritization, distance budgets, and runtime CPU/GPU-aware quality control.
+H4Shira provides the H4S Adaptive Rendering Engine: a client-side Roblox system for lighting control, atmosphere, contextual material adjustments, perceptual prioritization, distance budgets, and runtime CPU/GPU-aware quality control.
 
 ## Quick start
 
@@ -20,7 +20,7 @@ Use an earlier version when a smaller implementation is preferred.
 | `V1` | Future Lighting, atmosphere, water, Bloom and SunRays |
 | `V2` | Basic adaptive materials and dynamic lighting updates |
 | `V3` | Camera priority, material preservation and adaptive exposure |
-| `Latest` | Full H4S Visual Intelligence Engine with contextual analysis and runtime budgets |
+| `Latest` | Full H4S Adaptive Rendering Engine with contextual analysis and runtime budgets |
 
 ## Optional attributes
 

@@ -2,7 +2,7 @@
 
 ## Latest
 
-- Added the H4S Visual Intelligence Engine.
+- Added the H4S Adaptive Rendering Engine.
 - Added artistic signature analysis and perceptual priority.
 - Added contextual material correction and aesthetic preservation.
 - Added independent CPU and frame-time quality budgets.

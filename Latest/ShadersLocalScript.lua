@@ -16,7 +16,7 @@ local animatedSet = {}
 local lightRegistry = {}
 local emitterRegistry = {}
 local engine = {
-	name = "H4S Visual Intelligence Engine",
+	name = "H4S Adaptive Rendering Engine",
 	version = "1.0.0",
 	signature = {},
 	zoneMemory = {},
@@ -51,7 +51,7 @@ local CONFIG = {
 	MaxAnimatedParts = 700,
 	SceneSampleSize = 900,
 	EnableSceneInterpretation = true,
-	EnableMaterialIntelligence = true,
+	EnableMaterialAdaptation = true,
 	EnableDynamicExposure = true,
 	EnableAdaptiveAtmosphere = true,
 	EnableCinematicDepth = true,
@@ -538,8 +538,8 @@ local function getCorrectionNeed(part, profile, keywordProfile)
 	return clamp01(need)
 end
 
-local function applyMaterialIntelligence(part)
-	if not CONFIG.EnableMaterialIntelligence or not isEligible(part) or shouldPreserve(part) then
+local function applyMaterialAdaptation(part)
+	if not CONFIG.EnableMaterialAdaptation or not isEligible(part) or shouldPreserve(part) then
 		return
 	end
 	local original = tracked[part]
@@ -619,7 +619,7 @@ local function processScanBatch()
 	while processed < budget and scanCursor <= #worldParts do
 		local part = worldParts[scanCursor]
 		if part and part.Parent then
-			applyMaterialIntelligence(part)
+			applyMaterialAdaptation(part)
 		end
 		scanCursor += 1
 		processed += 1
@@ -776,7 +776,7 @@ connections[#connections + 1] = Workspace.DescendantAdded:Connect(function(desce
 		if #worldParts > CONFIG.MaxTrackedParts then
 			table.remove(worldParts, 1)
 		end
-		task.defer(applyMaterialIntelligence, descendant)
+		task.defer(applyMaterialAdaptation, descendant)
 	end
 	if descendant:IsA("PointLight") or descendant:IsA("SpotLight") or descendant:IsA("SurfaceLight") or descendant:IsA("ParticleEmitter") then
 		scanNativeRenderObjects()
