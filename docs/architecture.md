@@ -1,7 +1,10 @@
-# Arquitetura técnica
+# Technical Architecture
 
-- Scene intent: identifica estilo por paleta, saturação, materiais e nomes contextuais.
-- Artistic signature: cria médias por material para localizar outliers visuais.
-- Perceptual priority: considera distância, tamanho e centralidade na câmera.
-- Runtime budgets: mede frame time e tempo do Lua para ajustar lotes.
-- Native budgets: limita luzes locais e partículas distantes usando propriedades públicas.
+- **Scene intent:** estimates the map style from palette, saturation, materials, lighting, and context names.
+- **Artistic signature:** builds per-material averages to locate visual outliers without replacing the whole palette.
+- **Perceptual priority:** considers distance, object size, and camera centrality.
+- **Contextual correction:** combines material profiles, object names, zones, and preservation attributes.
+- **Runtime budgets:** measures frame time and Lua execution time to adjust work batches.
+- **Native budgets:** limits distant local lights and particle emitters through public Roblox properties.
+
+The engine does not access Roblox's private renderer, GPU buffers, or driver-level upscaling APIs.

@@ -1,13 +1,17 @@
-# Documentação H4S
+# H4S Documentation
 
-## Arquitetura
+## Overview
 
-O projeto evolui de pós-processamento básico para análise visual contextual. A versão Latest registra uma assinatura do mapa, mede desvios de material, calcula prioridade perceptual e aplica correções graduais.
+H4S is a client-side visual system for Roblox Studio. It controls public Roblox lighting and post-processing APIs while applying contextual material and performance rules.
 
-## Compatibilidade
+## Architecture
 
-Roblox Studio com APIs públicas. A tecnologia é client-side e deve ser instalada como LocalScript.
+The engine builds an artistic signature from the map, measures material deviations, calculates perceptual priority from camera context, and applies gradual corrections. Runtime budgets reduce analysis, light, and particle work when the client is under load.
 
-## Modelo de licença
+## Compatibility
 
-Este repositório é preparado para licença comercial própria da H4ShiraTeam. Defina a licença final antes da distribuição pública.
+The system is intended for Roblox Studio projects that support the public APIs used by the selected version. Install it as a `LocalScript`.
+
+## Commercial model
+
+H4S is distributed under the proprietary commercial SaaS license in the repository root. Usage rights, support, updates, and redistribution permissions depend on the customer's commercial agreement.

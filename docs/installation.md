@@ -1,8 +1,16 @@
-# Instalação
+# Installation
 
-1. Abra `StarterPlayer > StarterPlayerScripts`.
-2. Insira um `LocalScript`.
-3. Cole o conteúdo de `Latest/ShadersLocalScript.lua`.
-4. Publique o mapa e teste em PC, celular e console.
+1. Open `StarterPlayer > StarterPlayerScripts` in Roblox Studio.
+2. Create a `LocalScript`.
+3. Copy the contents of `Latest/ShadersLocalScript.lua` into the script.
+4. Run the experience in Studio.
+5. Test the selected version on the target devices.
 
-Atributos úteis no Workspace: `H4S_ArtStyle` com `realistic`, `cinematic`, `stylized` ou `balanced`; `H4S_PreserveAesthetic` entre 0 e 1.
+## Workspace attributes
+
+Optional attributes can be placed on `Workspace`:
+
+- `H4S_ArtStyle`: `realistic`, `cinematic`, `stylized`, or `balanced`.
+- `H4S_PreserveAesthetic`: number from `0` to `1`.
+
+The `Latest` version is the recommended starting point. Use `V1`, `V2`, or `V3` when a smaller feature set is required.

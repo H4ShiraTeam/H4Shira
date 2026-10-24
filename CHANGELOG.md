@@ -1,16 +1,23 @@
 # Changelog
 
 ## Latest
-- Engine proprietário de assinatura artística e prioridade perceptual.
-- Controle independente de custo de frame e CPU do script.
-- Orçamento de luzes locais e partículas por distância.
-- Preservação de estética, zonas contextuais e materiais adaptativos.
+
+- Added the H4S Visual Intelligence Engine.
+- Added artistic signature analysis and perceptual priority.
+- Added contextual material correction and aesthetic preservation.
+- Added independent CPU and frame-time quality budgets.
+- Added distance budgets for local lights and particle emitters.
 
 ## V3
-- Prioridade baseada em câmera, preservação e exposição adaptativa.
+
+- Added camera-based perceptual priority.
+- Added material preservation and adaptive exposure.
 
 ## V2
-- Correção de materiais e atualização dinâmica de iluminação.
+
+- Added adaptive material correction.
+- Added dynamic lighting and atmosphere updates.
 
 ## V1
-- Future Lighting, atmosfera, água e pós-processamento base.
+
+- Added Future Lighting, atmosphere, water, Bloom, and SunRays.

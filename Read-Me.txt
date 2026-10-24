@@ -1,9 +1,9 @@
-H4Shira - instalação rápida
+H4Shira quick start
 
-1. Abra o Roblox Studio.
-2. Escolha uma pasta de versão.
-3. Copie ShadersLocalScript.lua para StarterPlayer/StarterPlayerScripts.
-4. Execute em Play.
-5. Use H4S_KeepMaterial=true para proteger uma peça.
+1. Open the project in Roblox Studio.
+2. Choose a version folder.
+3. Copy `ShadersLocalScript.lua` into `StarterPlayer/StarterPlayerScripts` as a LocalScript.
+4. Run the experience.
+5. Use `Latest` for the complete engine.
 
-Comece com Latest para o sistema completo.
+For configuration, read `docs/installation.md` and `examples/attributes.md`.

@@ -1,8 +1,8 @@
 # H4Shira
 
-Adaptive visual systems for Roblox Studio.
+Adaptive visual systems for Roblox Studio, distributed as a proprietary commercial SaaS product.
 
-H4Shira provides a single LocalScript with lighting controls, atmosphere, material adjustments, perceptual prioritization, distance budgets for lights and particles, and runtime CPU/GPU-aware quality control.
+H4Shira provides the H4S Visual Intelligence Engine: a client-side Roblox system for lighting control, atmosphere, contextual material adjustments, perceptual prioritization, distance budgets, and runtime CPU/GPU-aware quality control.
 
 ## Quick start
 
@@ -11,7 +11,7 @@ H4Shira provides a single LocalScript with lighting controls, atmosphere, materi
 3. Create a `LocalScript` inside `StarterPlayer > StarterPlayerScripts`.
 4. Paste the script and run the experience.
 
-Use an earlier version if you need a smaller or simpler implementation.
+Use an earlier version when a smaller implementation is preferred.
 
 ## Versions
 
@@ -38,13 +38,14 @@ H4S_KeepParticles = true
 
 Valid `H4S_ArtStyle` values are `realistic`, `cinematic`, `stylized`, and `balanced`.
 
-## Notes
+## Technical notes
 
 - The scripts are client-side and should be installed as `LocalScript` objects.
-- The project uses public Roblox APIs and the Future lighting technology.
-- Existing materials, colors and protected objects are preserved as much as possible.
-- Custom PBR textures and `SurfaceAppearance` assets are not included and must be provided by the map creator.
-- Test the selected version on the target PC, mobile and console devices.
+- The project uses public Roblox APIs and Future lighting technology.
+- Existing materials, colors, and protected objects are preserved as much as possible.
+- Custom PBR textures and `SurfaceAppearance` assets are not included.
+- Test the selected version on the target PC, mobile, and console devices.
+- Roblox and Roblox Studio are trademarks of Roblox Corporation.
 
 ## Documentation
 
@@ -52,3 +53,8 @@ Valid `H4S_ArtStyle` values are `realistic`, `cinematic`, `stylized`, and `balan
 - [Architecture](docs/architecture.md)
 - [Attributes and tags](examples/attributes.md)
 - [Changelog](CHANGELOG.md)
+- [Commercial SaaS License](LICENSE)
+
+## License
+
+This is proprietary software. Access, source use, redistribution, resale, and commercial rights are governed by the [H4Shira Proprietary Commercial SaaS License](LICENSE).

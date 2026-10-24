@@ -1,7 +1,13 @@
-# Atributos e tags
+# Attributes and Tags
 
-`H4S_KeepMaterial = true` protege uma peça.
-`H4S_Preserve = true` preserva uma peça ou modelo.
-`H4S_ForceRealism = true` aumenta a correção contextual.
-`H4S_ArtStyle` no Workspace define o estilo geral.
-`H4S_KeepLight` e `H4S_KeepParticles` protegem componentes nativos.
+Use these optional attributes and tags to control the engine:
+
+- `H4S_KeepMaterial = true` protects a part's material and color.
+- `H4S_Preserve = true` protects an object from contextual correction.
+- `H4S_ForceRealism = true` increases contextual correction strength.
+- `H4S_ArtStyle` on `Workspace` sets the global visual style.
+- `H4S_PreserveAesthetic` controls how strongly the original style is preserved.
+- `H4S_KeepLight = true` protects a local light from distance budgeting.
+- `H4S_KeepParticles = true` protects a particle emitter from distance budgeting.
+
+Equivalent tags supported by the engine include `H4S_KeepMaterial`, `H4S_Preserve`, and `H4S_ForceRealism`.
